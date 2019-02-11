@@ -16,7 +16,7 @@ HuffmanTree<char>* PA1::huffmanTreeFromText(vector<string> data)
 	//store frequencies in hashtable
 
     // freq distribution
-    unordered_map<char, int> frequencies{};
+    unordered_map<char, int> frequencies;
     
     for(auto word: data)
     {
@@ -27,7 +27,7 @@ HuffmanTree<char>* PA1::huffmanTreeFromText(vector<string> data)
     }
 
 	//maintains huffman tree forest 
-    priority_queue <HuffmanTree<char>*, vector<HuffmanTree<char>*>, TreeComparer> forest{};
+    priority_queue <HuffmanTree<char>*, vector<HuffmanTree<char>*>, TreeComparer> forest;
 
     // need to loop
     for(auto kvp:frequencies)
@@ -36,20 +36,7 @@ HuffmanTree<char>* PA1::huffmanTreeFromText(vector<string> data)
     }
 
     // place on left side
-
-    /*
-    HuffmanTree<char>* smaller = forest.top();
-    forest.pop();
-    HuffmanTree<char>* larger = forest.top();
-    forest.pop();
-    forest.push(new HuffmanTree<char>{smaller, larger});
-    */
-
-    //  this how u merge trees ^^ need to figure out how to merge them continously until there is 1 tree
-
-    // ask myself what does :: do?
-
-    // how to know all is done merging? 
+    //  merge trees continously
     for(int i = 0; i < forest.size(); i++)
     {
         HuffmanTree<char>* smaller = forest.top();
@@ -65,6 +52,12 @@ HuffmanTree<char>* PA1::huffmanTreeFromText(vector<string> data)
 
 //PA #1 TODO: Generates a Huffman character tree from the supplied encoding map
 //NOTE: I used a recursive helper function to solve this!
+
+void huffmanTreeFromMapHelper()
+{
+
+}
+
 HuffmanTree<char>* PA1::huffmanTreeFromMap(unordered_map<char, string> huffmanMap)
 {
     //Generates a Huffman Tree based on the supplied Huffman Map.Recall that a 
@@ -117,6 +110,22 @@ void PA1::writeEncodingMapToFile(unordered_map<char, string> huffmanMap, string 
 {
     //Writes the supplied encoding map to a file.  My map file has one 
     //association per line (e.g. 'a' and 001 would yield the line "a001")
+    ofstream writeFile(file_name);
+    if(writeFile.is_open())
+    {
+        for(auto kvp : huffmanMap)
+        {
+            writeFile << kvp.first << kvp.second << endl;
+
+        }
+
+    }
+    else
+    {
+        cout << "unable to open";
+    }
+    
+    writeFile.close();
 }
 
 //PA #1 TODO: Reads an encoding map from a file.  Needed for decompression.
@@ -124,6 +133,15 @@ unordered_map<char, string> PA1::readEncodingMapFromFile(string file_name)
 {
     //Creates a Huffman Map from the supplied file.Essentially, this is the 
     //inverse of writeEncodingMapToFile.  
+    ifstream readFile(file_name);
+    readFile.open(file_name);
+    if(readFile.is_open()==true)
+    {
+        while(!readFile.eof())
+        {
+            
+        }
+    }
     unordered_map<char, string> result{};
     return result;
 }
