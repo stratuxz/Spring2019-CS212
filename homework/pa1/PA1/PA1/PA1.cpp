@@ -18,7 +18,7 @@ HuffmanTree<char>* PA1::huffmanTreeFromText(vector<string> data)
     // freq distribution
     unordered_map<char, int> frequencies;
     
-    for(auto word: data)
+    for(auto word : data)
     {
         for(auto ch : word)
         {
@@ -27,18 +27,24 @@ HuffmanTree<char>* PA1::huffmanTreeFromText(vector<string> data)
     }
 
 	//maintains huffman tree forest 
-    priority_queue <HuffmanTree<char>*, vector<HuffmanTree<char>*>, TreeComparer> forest;
+    priority_queue <HuffmanTree<char>*, vector<HuffmanTree<char>*>, 
+                    TreeComparer> forest;
 
     // need to loop
-    for(auto kvp:frequencies)
+    for(auto kvp : frequencies)
     {
         forest.push(new HuffmanTree<char>(kvp.first, kvp.second));
     }
 
-    // place on left side
-    //  merge trees continously
-    for(int i = 0; i < forest.size(); i++)
+    // place smaller on left side
+    //  merge trees continously until 1 tree
+    while(!forest.empty())
     {
+        if(forest.size()==1)
+        {
+            break;
+        }
+
         HuffmanTree<char>* smaller = forest.top();
         forest.pop();
         HuffmanTree<char>* larger = forest.top();
@@ -50,12 +56,20 @@ HuffmanTree<char>* PA1::huffmanTreeFromText(vector<string> data)
     return forest.top();
 }
 
+
+
 //PA #1 TODO: Generates a Huffman character tree from the supplied encoding map
 //NOTE: I used a recursive helper function to solve this!
 
-void huffmanTreeFromMapHelper()
-{
+// honestly not sure what this task is asking
+// whats the difference between this function and the encoding function?
+// in class: buiding nodes 
 
+void huffmanTreeFromMapHelper(HuffmanNode<char>& node)
+{
+    HuffmanNode<char>* _root = new HuffmanInternalNode<char>{nullptr, nullptr};
+    HuffmanInternalNode<char>* current = dynamic_cast<HuffmanInternalNode<char>*>(root);
+    HuffmanTree<char>* right;
 }
 
 HuffmanTree<char>* PA1::huffmanTreeFromMap(unordered_map<char, string> huffmanMap)
@@ -63,6 +77,11 @@ HuffmanTree<char>* PA1::huffmanTreeFromMap(unordered_map<char, string> huffmanMa
     //Generates a Huffman Tree based on the supplied Huffman Map.Recall that a 
     //Huffman Map contains a series of codes(e.g. 'a' = > 001).Each digit(0, 1) 
     //in a given code corresponds to a left branch for 0 and right branch for 1.
+
+    HuffmanNode<char>* _root = nullptr;
+    string path = "";
+
+
     return nullptr;
 }
 
@@ -98,6 +117,8 @@ void huffmanEncodingMapFromTreeHelper(unordered_map<char, string>& map,
 //NOTE: I used a recursive helper function to solve this!
 unordered_map<char, string> PA1::huffmanEncodingMapFromTree(HuffmanTree<char> *tree)
 {
+    // a pre-order walk 
+
     unordered_map<char, string> result;
 
     huffmanEncodingMapFromTreeHelper(result, tree->getRoot(), "");
@@ -111,6 +132,7 @@ void PA1::writeEncodingMapToFile(unordered_map<char, string> huffmanMap, string 
     //Writes the supplied encoding map to a file.  My map file has one 
     //association per line (e.g. 'a' and 001 would yield the line "a001")
     ofstream writeFile(file_name);
+
     if(writeFile.is_open())
     {
         for(auto kvp : huffmanMap)
@@ -135,11 +157,15 @@ unordered_map<char, string> PA1::readEncodingMapFromFile(string file_name)
     //inverse of writeEncodingMapToFile.  
     ifstream readFile(file_name);
     readFile.open(file_name);
+
+    // not understanding what this is asking, So it will convert the file into a map
+    // where it counts the characters? 
     if(readFile.is_open()==true)
     {
-        while(!readFile.eof())
+        string line =" ";
+        while(!readFile.good())
         {
-            
+            getline(readFile, line);
         }
     }
     unordered_map<char, string> result{};
@@ -149,6 +175,8 @@ unordered_map<char, string> PA1::readEncodingMapFromFile(string file_name)
 //PA #1 TODO: Converts a vector of bits (bool) back into readable text using the supplied Huffman map
 string PA1::decodeBits(vector<bool> bits, unordered_map<char, string> huffmanMap)
 {
+    // calll the build tree from map, call the tree and walk the tree 
+
     //Uses the supplied Huffman Map to convert the vector of bools (bits) back into text.
     //To solve this problem, I converted the Huffman Map into a Huffman Tree and used 
     //tree traversals to convert the bits back into text.
@@ -159,6 +187,8 @@ string PA1::decodeBits(vector<bool> bits, unordered_map<char, string> huffmanMap
 //PA #1 TODO: Using the supplied Huffman map compression, converts the supplied text into a series of bits (boolean values)
 vector<bool> PA1::toBinary(vector<string> text, unordered_map<char, string> huffmanMap)
 {
+    // look up the string representation
+    
     vector<bool> result{};
     return result;
 }
