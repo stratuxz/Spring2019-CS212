@@ -78,8 +78,50 @@ HuffmanTree<char>* PA1::huffmanTreeFromMap(unordered_map<char, string> huffmanMa
     //Huffman Map contains a series of codes(e.g. 'a' = > 001).Each digit(0, 1) 
     //in a given code corresponds to a left branch for 0 and right branch for 1.
 
+    // what we did during claas: 
     HuffmanNode<char>* _root = nullptr;
-    string path = "";
+    string path = "0110";
+
+    HuffmanNode<char>* root = new HuffmanInternalNode<char>{nullptr, nullptr};
+    HuffmanInternalNode<char>* current = dynamic_cast<HuffmanInternalNode<char>*>(root);
+    HuffmanTree<char>* right;
+
+    //  in the loop we are creating the internal nodes
+    for(int i =0; i<path.length()-1; i++)
+    {
+        char ch = path[i];
+        if (ch == '0')
+        {
+            // left
+            if(current->getLeftChild() == nullptr)
+            {
+                current->setLeftChild(new HuffmanInternalNode<char>{nullptr, nullptr});
+            }
+            current = dynamic_cast<HuffmanInternalNode<char>*>(current->getLeftChild());
+        }
+        else 
+        {
+            // right
+            if(current->getRightChild() == nullptr)
+            {
+                current->setRightChild(new HuffmanInternalNode<char>{nullptr, nullptr});
+            }
+            current = dynamic_cast<HuffmanInternalNode<char>*>(current->getRightChild());
+        }
+    }
+
+    // outside of the loop we are creating leaf nodes 
+    char last_ch = path[path.length()-1];
+
+    if(last_ch == '0')
+    {
+        current->setLeftChild(new HuffmanLeafNode<char>{value, 1});
+    }
+    else
+    {
+        current->setRightChild(new HuffmanLeafNode<char>{value, 1});
+    }
+    
 
 
     return nullptr;
@@ -176,6 +218,7 @@ unordered_map<char, string> PA1::readEncodingMapFromFile(string file_name)
 string PA1::decodeBits(vector<bool> bits, unordered_map<char, string> huffmanMap)
 {
     // calll the build tree from map, call the tree and walk the tree 
+    new HuffmanTree<char>* = huffmanTreeFromMap()
 
     //Uses the supplied Huffman Map to convert the vector of bools (bits) back into text.
     //To solve this problem, I converted the Huffman Map into a Huffman Tree and used 
