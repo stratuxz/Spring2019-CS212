@@ -10,30 +10,28 @@ def process_csv(file_name):
             data.append(row)
     return data
 
-def dataToMap(data_list):
-    for elements in data_list:
-        elem = elements
-        hsuMap.connect_vertex(*elem)
-
 hsuMap = Graph()
 loc = Locations()
 
-# add nodes
 for i in loc._locations:
     hsuMap.add_vertex(i)
 
 mapData = process_csv("distances.csv")
-dataToMap(mapData)
+
+for items in mapData:
+    hsuMap.connect_vertex(*items)
+
 
 print("** HSU Transit Time Calculator **")
 print("Enter starting location: ")
 start = input()
-beg_code = loc.look_up(start)
+beg_code = loc.look_up("Cedar")
+hsuMap.compute_shortest_path(beg_code)
 print("Enter destination: ")
-end = input()
-end_code = loc.look_up(end)
+#end = input()
+#end_code = loc.look_up("FWH")
 print("Etimated travel time: ")
-total = input()
+#total = input()
 
 
 
