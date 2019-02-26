@@ -57,33 +57,6 @@ class Graph:
                         if not edge in distances:
                             heappush(to_visit, (weight + top[0], edge))
 
-
         return distances
 
-# similar to the function above, expect we want to return the list of 
-# keys it took to get to end destination
-# instead of storing the frequencies for distance values,
-#  lets store list of nodes visited
-
-    def buildingsPassed(self, start):
-        # keys are codes, values is list
-        distances = {}
-        # visited keys
-        visited = []
-        
-        if start in self._graph:
-            trackpq = []
-            heappush(trackpq, (0, start))
-            while len(trackpq) > 0:
-                top = heappop(trackpq)
-             
-                key = top[1]
-                addkey = [key]
-                if key not in distances:
-                    visited = visited + addkey
-                    distances[key] = [top[0], visited]
-
-                    for edge, weight in self._graph[key].items():
-                        if not edge in distances:
-                            heappush(trackpq, (weight + top[0], edge))
-        return distances
+ 
