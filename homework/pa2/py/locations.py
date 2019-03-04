@@ -27,7 +27,7 @@ class Locations:
         'I' : ["HAH", "BRH", "LAPT", "Little Apartments", "Brero House", "Hagopian House"], 
         'I2' : ["Campus Events Field"], 
         'J' : ["University Center", "The Depot", "Bookstore", "UC Quad"], 
-        'J2' : ["Wildlife & Fisheries"], 
+        'J2' : ["Wildlife & Fisheries", "WLDF"], 
         'K' : ["Student Health and Counseling"], 
         'K2' : ["Marine Wildlife Care Center"], 
         'L' : ["Library", "Library Circle"], 
