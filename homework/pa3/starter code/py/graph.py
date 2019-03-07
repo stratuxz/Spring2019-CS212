@@ -40,8 +40,6 @@ class Graph:
 
             #pop off top
             top = heappop(mst_queue)
-            weight = top[0]
-            source = top[1]
             sink = top[2]
 
             #if not seen:
@@ -59,6 +57,7 @@ class Graph:
                     heappush(mst_queue, (new_edge_weight, sink, vertex))
         return accepted_edges
 
+# compute shortest path based on mst graph 
     def compute_shortest_path(self, start):
 
         #tracks known distances
@@ -84,7 +83,6 @@ class Graph:
                 key = top[1]
 
                 if not key in distances:
-
                     #record distance
                     distances[key] = top[0]
 

@@ -1,36 +1,46 @@
-#for CSV parsing
 import csv
+from functions import *
 from graph import Graph
 
+print("*** Tier 1 Route Planner***")
+
+print("Enter map file: ")
+#first_map = input()
+housemap = Graph()
+fileToMap(housemap, "map1.txt")
+
+print("Enter destination file: ")
+#first_dest = input()
+show = process_csv("deliveries1.txt")
+first_mst  = housemap.compute_minimum_spanning_tree('A')
+
+print("Total Transit Time:")
+print(calculateMstTime(first_mst))
 
 
-#example of getting data from CSV
-#result = process_csv("data.csv")
+print("*** Tier 2 Route Planner***")
+print("Enter map file: ")
+#second_map = input()
+routes = Graph()
+fileToMap(routes, "map2.txt")
 
-g = Graph() 
-g.add_vertex("a")
-g.add_vertex("b")
-g.add_vertex("c")
-g.add_vertex("d")
-g.add_vertex("e")
-g.add_vertex("f")
-g.add_vertex("g")
-g.add_vertex("h")
-g.connect_vertex("a", "b", 3, True)
-g.connect_vertex("a", "c", 15, True)
-g.connect_vertex("a", "d", 6, True)
-g.connect_vertex("e", "a", 4, True)
-g.connect_vertex("h", "f", 4, True)
-g.connect_vertex("f", "e", 12, True)
-g.connect_vertex("h", "g", 3, True)
-g.connect_vertex("a", "g", 11, True)
-g.connect_vertex("b", "g", 6, True)
-g.connect_vertex("c", "f", 2, True)
-g.connect_vertex("d", "g", 6, True)
-g.connect_vertex("e", "d", 7, True)
-g.connect_vertex("f", "c", 4, True)
-g.connect_vertex("g", "b", 9, True)
-g.connect_vertex("h", "a", 7, True)
-distances = g.compute_shortest_path("a")
-mst = g.compute_minimum_spanning_tree("a")
-print("done")
+print("Enter destination file: ")
+#second_dest = input()
+second_mst = fasterDeliveryPath(routes, "deliveries2.txt")
+
+print("Total Transit Time:")
+print(calculateMstTime(second_mst))
+
+print("*** Tier 3 Route Planner***")
+print("Enter map file: ")
+#third_map = input()
+deliveryMap = Graph()
+fileToMap(deliveryMap, "map3.txt")
+
+print("Enter destination file: ")
+#third_dest = input()
+third_mst = fasterDeliveryPath(deliveryMap, "deliveries3.1.txt")
+
+print("Total Transit Time: ")
+print(calculateMstTime(third_mst))
+printFasterPath(third_mst)
