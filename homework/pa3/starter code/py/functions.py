@@ -9,72 +9,100 @@ def process_csv(file_name):
             data.append(row)
     return data
 
-def fileToMap(class_instance, file_name):
-    # keep track of destinations
-    temp = []
+def fileToMap(graph_instance, file_name):
+    # keep track of houses
+    houses = []
+
     file_data = process_csv(file_name)
 
-    #only want to add unique destinations
     for data in file_data:
-        if data[0] not in temp:
-            temp.append(data[0])
-            class_instance.add_vertex(data[0])
 
-        if data[1] not in temp:
-            temp.append(data[1])
-            class_instance.add_vertex(data[1])
+        #only want to add unique houses
+        if data[0] not in houses:
+            houses.append(data[0])
+            graph_instance.add_vertex(data[0])
+
+        if data[1] not in houses:
+            houses.append(data[1])
+            graph_instance.add_vertex(data[1])
             
-    # convert weight to int while we're at it
+        # convert weight to int while we're at it
         data[2] = int(data[2])
 
-        class_instance.connect_vertex(data[0], data[1], data[2], True)
-    
+        graph_instance.connect_vertex(data[0], data[1], data[2], True)
+
 def calculateMstTime(mst_graph):
     time = 0
-    for i in mst_graph:
-        time += i[0]
+    for house in mst_graph:
+        time += house[0]
     return str(time) + " minutes"
 
-# look for end key in the computed-short graph
-def searchDestination(key, computed_map):
-    if key in computed_map:
-        return computed_map[key]
+# look for house in the computed short graph
+def searchDestination(house, computed_map):
+    if house in computed_map:
+        return computed_map[house]
 
-def fasterDeliveryPath(class_instance, file_name):
+def fasterDeliveryPath(graph_instance, file_name):
     delivery_list = process_csv(file_name)
 
     # convert to a single list (not necessary, just makes it easier to read/use)
     delivery_route = [house[0] for house in delivery_list]
 
-    delivery_path = []
-
+    # keep track of paths and weight
+    path = []
+     
     newGraph = Graph()
 
-    # compute dijkstra's algorithm on each delivery 
-    for i in range(0, len(delivery_route)):
-
-        short_path = class_instance.compute_shortest_path(delivery_route[i])
-
-        if i != len(delivery_route)-1:
-            time_reached = searchDestination(delivery_route[i+1], short_path)
-            delivery_path.append((delivery_route[i], delivery_route[i+1], int(time_reached)))
+    for house in range(0, len(delivery_route)):
         
-        #if we have reached the last element, record shortest distance back to starting point
+        start_house = delivery_route[0]
+        current_house = delivery_route[house]
+
+        # compute dijkstra's algorithm on each delivery 
+        short_path = graph_instance.compute_shortest_path(current_house)
+
+        # if not at the last house yet
+        if house != len(delivery_route)-1:
+            next_house = delivery_route[house+1]
+            # search for weight to next house
+            weight = searchDestination(next_house, short_path)
+            # record current house, next house and  weight
+            path.append((current_house, next_house, weight))
+        
+        #if we have reached the last house delivery
         else:
-            time_reached = searchDestination(delivery_route[0], short_path)
-            delivery_path.append((delivery_route[i], delivery_route[0], int(time_reached)))
+            # search for starting house 
+            weight = searchDestination(start_house, short_path)
+            # record last house, starting house and weight
+            path.append((current_house, start_house, weight))
 
-        newGraph.add_vertex(delivery_route[i])
-    
-    for deliveries in delivery_path:
+        newGraph.add_vertex(current_house)
+
+    #new graph based on relevant houses and time
+    for deliveries in path:
         newGraph.connect_vertex(deliveries[0], deliveries[1], deliveries[2], True)
+    # mst on starting house
 
-    # complete mst based on first delivery 
-    shorter_path = newGraph.compute_minimum_spanning_tree(deliveries[0][0])
+    shorter_path = newGraph.compute_minimum_spanning_tree(path[0][0])
         
     return shorter_path
 
-def printFasterPath(faster_path):
+def printFasterPath(shorter_path):
     print("Route: ")
-    for info in faster_path:
+    for info in shorter_path:
         print(info[1], '->', info[2])
+
+def printPath(path):
+    newGraph = Graph()
+    sh0w = newGraph.returnGraph()
+    for data in path:
+
+        if data[1] not in sh0w:
+            newGraph.add_vertex(data[1])
+        if data[2] not in sh0w:
+            newGraph.add_vertex(data[2])
+
+        newGraph.connect_vertex(data[1], data[2], data[0], True)
+
+
+    

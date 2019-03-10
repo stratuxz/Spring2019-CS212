@@ -14,6 +14,9 @@ class Graph:
         if is_bidirectional == True:
             self.connect_vertex(sink, source, weight, False)
     
+    def returnGraph(self):
+        return self._graph.items()
+
     def compute_minimum_spanning_tree(self, start):
 
         #our PQ
