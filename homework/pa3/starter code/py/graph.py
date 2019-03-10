@@ -1,5 +1,5 @@
 #PQ functions in Python
-from heapq import *
+from heapq import heappop, heappush
 class Graph:
 
     #constructor in Python

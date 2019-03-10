@@ -89,20 +89,17 @@ def fasterDeliveryPath(graph_instance, file_name):
 
 def printFasterPath(shorter_path):
     print("Route: ")
-    for info in shorter_path:
-        print(info[1], '->', info[2])
-
-def printPath(path):
-    newGraph = Graph()
-    sh0w = newGraph.returnGraph()
-    for data in path:
-
-        if data[1] not in sh0w:
-            newGraph.add_vertex(data[1])
-        if data[2] not in sh0w:
-            newGraph.add_vertex(data[2])
-
-        newGraph.connect_vertex(data[1], data[2], data[0], True)
-
-
-    
+    size = len(shorter_path)
+    for i in range(0, size):
+        next = shorter_path[i][2]
+        current = shorter_path[i][1]
+        #if not at at element of list
+        if i != size-1:
+            #if next delivery isnt current delivery for next element
+            if next != shorter_path[i+1][1]:
+                #then flip
+                print(next, '->', current)
+            else:
+                print(current, '->', next)
+        else:
+            print(current, '->', next)
