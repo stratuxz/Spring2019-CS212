@@ -37,55 +37,36 @@ def calculateMstTime(mst_graph):
         time += house[0]
     return str(time) + " minutes"
 
-# look for house in the computed short graph
-def searchDestination(house, computed_map):
-    if house in computed_map:
-        return computed_map[house]
-
-def fasterDeliveryPath(graph_instance, file_name):
+def shorterDeliveryPath(graph_instance, file_name):
     delivery_list = process_csv(file_name)
 
     # convert to a single list (not necessary, just makes it easier to read/use)
     delivery_route = [house[0] for house in delivery_list]
 
     # keep track of paths and weight
-    path = []
-     
+    short_path = {}
     newGraph = Graph()
 
     for house in range(0, len(delivery_route)):
         
-        start_house = delivery_route[0]
         current_house = delivery_route[house]
+        newGraph.add_vertex(current_house)
 
         # compute dijkstra's algorithm on each delivery 
         short_path = graph_instance.compute_shortest_path(current_house)
+    
+        for house in short_path:
+            # if current house is not equal to itself while going through
+            # the short path dictionary AND
+            # if the house exists on delivery route  
+            if current_house != house and house in delivery_route:
+                time = short_path[house]
+                newGraph.connect_vertex(current_house, house, time)
+                #path.append((current_house, deliveries, time))
 
-        # if not at the last house yet
-        if house != len(delivery_route)-1:
-            next_house = delivery_route[house+1]
-            # search for weight to next house
-            weight = searchDestination(next_house, short_path)
-            # record current house, next house and  weight
-            path.append((current_house, next_house, weight))
-        
-        #if we have reached the last house delivery
-        else:
-            # search for starting house 
-            weight = searchDestination(start_house, short_path)
-            # record last house, starting house and weight
-            path.append((current_house, start_house, weight))
-
-        newGraph.add_vertex(current_house)
-
-    #new graph based on relevant houses and time
-    for deliveries in path:
-        newGraph.connect_vertex(deliveries[0], deliveries[1], deliveries[2], True)
-    # mst on starting house
-
-    shorter_path = newGraph.compute_minimum_spanning_tree(path[0][0])
-        
-    return shorter_path
+    # compute MST based on first delivery
+    path = newGraph.compute_minimum_spanning_tree(delivery_route[0])
+    return path
 
 def printFasterPath(shorter_path):
     print("Route: ")

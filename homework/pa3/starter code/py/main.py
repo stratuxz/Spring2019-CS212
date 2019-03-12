@@ -1,5 +1,5 @@
 #Zahory Velazquez
-#03.09.2019
+#03.12.2019
 
 import csv
 from functions import *
@@ -19,19 +19,6 @@ first_mst  = firstCityMap.compute_minimum_spanning_tree(delivery_locs[0][0])
 print("Total Transit Time: ", end= "")
 print(calculateMstTime(first_mst), end='\n\n')
 
-print("*** Tier 2 Route Planner ***")
-print("Enter map file: ", end='')
-second_map = input()
-secondCityMap = Graph()
-fileToMap(secondCityMap, second_map)
-
-print("Enter destination file: ", end='')
-second_dest = input()
-second_mst = fasterDeliveryPath(secondCityMap, second_dest)
-
-print("Total Transit Time: ", end='')
-print(calculateMstTime(second_mst), end='\n\n')
-
 print("*** Tier 3 Route Planner ***")
 print("Enter map file: ", end='')
 third_map = input()
@@ -40,7 +27,7 @@ fileToMap(thirsCityMap, third_map)
 
 print("Enter destination file: ", end='')
 third_dest = input()
-third_mst = fasterDeliveryPath(thirsCityMap, third_dest)
+third_mst = shorterDeliveryPath(thirsCityMap, third_dest)
 
 print("Total Transit Time: ", end='')
 print(calculateMstTime(third_mst))
