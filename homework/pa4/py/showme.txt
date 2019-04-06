@@ -1,0 +1,3 @@
+Sunny| Outlook | 3 
+Overcast| Outlook | 3 
+Rain| Outlook | 3 
