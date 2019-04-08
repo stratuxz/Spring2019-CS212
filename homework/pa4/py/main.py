@@ -101,19 +101,37 @@ def buildTreeFromFile():
    tree = build_tree(file_result, predictor_variables, int(user_outcome))
    
    return tree
-    
-def TreeToFile(decision_tree):
 
-   file_name = input("Enter a name to create a .txt ile: ")
+def treeToVector(decision_tree, depths = []):
 
-   with open(file_name, 'wt') as write_file:
+   node = decision_tree.value
+   num_children = len(decision_tree.children)
+   # at root
+   if len(depths) == 0:
+      edge = "NULL"
+      depths.append([edge, node, num_children])
 
-      node = decision_tree.value
-      num_children = len(decision_tree.children)
-      for edge in decision_tree.children:
-         #edges = decision_tree[node]
-         write_file.write("{0}| {1} | {2} \n".format(edge, node, num_children))
+   for key, tree_node in decision_tree.children.items():
+      edge = key
+      node = tree_node.value
+      num_children = len(tree_node.children)
 
+      depths.append([edge, node, num_children])
+
+   for tree_node in decision_tree.children.values():
+      treeToVector(tree_node, depths)
+   
+   return depths
+
+def transferToFile(tree_vector):
+   file_name = input("Create a .txt file: ")
+
+   with open(file_name, 'w') as tree_file:
+      for node in tree_vector:
+         tree_file.write("{0}|{1}|{2}\n".format(*node))
+
+
+   
 def main():
    
    result = process_csv("easy data set.csv")
@@ -123,7 +141,8 @@ def main():
    print("done")
 
    tree = buildTreeFromFile()
-   TreeToFile(tree)
+   tree_vect = treeToVector(tree)
+   transferToFile(tree_vect)
 
 
 if __name__ == '__main__':
