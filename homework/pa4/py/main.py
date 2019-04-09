@@ -10,7 +10,7 @@ class TreeNode:
 def process_csv(file_name):
    data = []
    with open(file_name, 'r') as some_file:
-      csv_file = csv.reader(some_file, delimiter=',', quotechar='"')
+      csv_file = csv.reader(some_file, delimiter=',' or '|', quotechar='"')
       for row in csv_file:
          data.append(row)
    return data
@@ -130,20 +130,105 @@ def transferToFile(tree_vector):
       for node in tree_vector:
          tree_file.write("{0}|{1}|{2}\n".format(*node))
 
+def fileToVector():
+   file_name = input("Enter a tree file: ")
+   tree_nodes = process_csv(file_name)
 
+   return tree_nodes
+
+
+def createTree(tree_vector):
+
+   if tree_vector[0][0] == "NULL":
+      node = TreeNode()
+      node.value[0][1]
+      num_children = int(tree_vector[0][2])
+
+   for tree_nodes in tree_vector:
+      num_children = int(tree_nodes[2])
+      node.value = tree_nodes[1]
+      start = tree_vector.index(tree_nodes)
+      
+      if num_children > 0:
+
+         for i in range(start+1, num_children+1):
+
+            node.children[tree_nodes[0]] = tree_vector[i][0]
+            # start = num_children
+            num_children += int(tree_nodes[i][2])
+
+   pass 
+
+   return node
+
+
+
+def PredcitedFile():
+   file_name = input("Enter a .csv file: ")
+   file_result = process_csv(file_name)
+
+   # outcome change to input row name
+   user_outcome = int(input("Enter a outcome variable: "))
+   predictor_variables = file_result[0]
+   file_result = file_result[1:]
+
+   tree = build_tree(file_result, predictor_variables, user_outcome)
+
+   predictor_file = input("Create a .csv file for predictors: ")
+
+   with open(predictor_file, 'w') as predicted_file:
+      for var in predictor_variables:
+         predicted_file.write(var)
+         new = predictOutcomes(predictor_variables, tree, file_result)
+         for info in new:
+            predicted_file.write(info)
+   pass
+
+
+def predictOutcomes(predictors, decision_tree, data):
+
+   node = decision_tree.value
+
+   if node in predictors:
+      index = predictors.index(node)
    
+   for row in data:
+      if len(decision_tree.children) == 0:
+         row.append(decision_tree.value)
+         return data 
+
+      for edge, tree_node in decision_tree.children.items():
+         if row[index] in edge:
+            predictOutcomes(predictors, tree_node, data)
+
+   return data
+   
+
+global root
+
 def main():
+
+   print("1. Build tree from file\n2. Write to File\n3. Predict Outcome\n4. Read from file")
+   option = int(input("Enter an option: "))
    
-   result = process_csv("easy data set.csv")
-   header = result[0]
-   result = result[1:]
-   root = build_tree(result, header, 4)
-   print("done")
 
-   tree = buildTreeFromFile()
-   tree_vect = treeToVector(tree)
-   transferToFile(tree_vect)
+   while option == 1 or option == 2 or option == 3 or option == 4:
+      if option == 1:
+         root = buildTreeFromFile()
+      elif option == 2:
+         tree_list = treeToVector(root)
+         transferToFile(tree_list)
+      elif option == 3:
+         #PredcitedFile()
+         break
+      elif option == 4:
+         tree_matrix = fileToVector()
+         break
+         
+      print("1. Build tree from file\n2. Write to File\n3. Predict Outcome\n4. Read from file")
+      option = int(input("Enter an option: "))
 
-
+   print("done") 
+  
 if __name__ == '__main__':
    main()
