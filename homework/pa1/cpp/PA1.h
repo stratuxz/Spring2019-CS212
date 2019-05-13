@@ -16,7 +16,6 @@
 
 using namespace std;
 
-// this is used for priority queue, so the greater the weight, the higher the priority
 class TreeComparer
 {
 public:

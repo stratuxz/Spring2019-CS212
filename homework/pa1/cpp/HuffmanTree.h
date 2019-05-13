@@ -20,14 +20,11 @@ public:
 		return _root;
 	}
 
-// to merge the trees
 	HuffmanTree(HuffmanTree<T> *left, HuffmanTree<T> *right)
 	{
 		_root = new HuffmanInternalNode<T>(left->getRoot(), right->getRoot());
 	}
 
-// internal nodes serve as placeholders with no values but have no pointers
-// leaf nodes have no pointers but do contain values
 	HuffmanTree(HuffmanInternalNode<T> *root)
 	{
 		_root = root;
